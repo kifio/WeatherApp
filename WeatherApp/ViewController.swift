@@ -8,29 +8,74 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var citiesView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
-    let strings = ["Hello", "Darkness", "My", "Old", "Friend"];
+    private let weatherInteractor = Interactor()
+    private var cities = [Interactor.City]()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return strings.count
+        return cities.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for: indexPath) as? CityCell else {
             fatalError("The dequeued cell is not an instance of MealTableViewCell.")
         }
-        cell.cityLabel.text = strings[indexPath.row]
+        
+        let city = cities[indexPath.row]
+        cell.cityLabel.text = city.location.city
+        
+        if let temperature = city.getTemperature() {
+            cell.setTemperature(fahrenheits: temperature)
+        }
+        
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let city = cities[indexPath.row]
+        if let cityName = city.location.city {
+            weatherInteractor.saveSearchItemToCoreData(cityName: cityName)
+        }
+        
+        let cityViewController = storyBoard.instantiateViewController(withIdentifier: "CityViewController") as! CityViewController
+        cityViewController.setCity(city)
+        self.present(cityViewController, animated: true, completion: nil)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("query: \(searchText)")
+        if searchText.isEmpty {
+            print("Query is empty")
+            cities.removeAll()
+            cities += weatherInteractor.getSavedSearchResults()
+            self.citiesView.reloadData()
+        } else {
+            weatherInteractor.requestCitiesFromRemote(query: searchText, failure: { msg in
+    //            let alertController = UIAlertController(title: "Alert", message: msg, preferredStyle: .alert)
+    //            self.present(alertController, animated: true, completion: nil)
+            }, success: { cities in
+                self.cities.removeAll()
+                self.cities += cities
+                self.citiesView.reloadData()
+            })
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         citiesView.dataSource = self
         citiesView.delegate = self
+        searchBar.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        cities += weatherInteractor.getSavedSearchResults()
     }
 }
-

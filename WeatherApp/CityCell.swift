@@ -23,5 +23,9 @@ class CityCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func setTemperature(fahrenheits: Float) {
+        weatherLabel.text = "\(fahrenheits)°F"
+    }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -76,19 +76,60 @@
                     </view>
                     <connections>
                         <outlet property="citiesView" destination="OS0-h6-PLw" id="sEO-Qf-ama"/>
+                        <outlet property="searchBar" destination="hhX-mr-m7W" id="9gF-nb-hQx"/>
+                        <segue destination="C25-sD-nks" kind="presentation" id="Dt4-SY-Wzy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="P10-KL-OKQ">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                    <autoresizingMask key="autoresizingMask"/>
-                    <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="P10-KL-OKQ" id="aTM-mH-hqg">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </tableViewCellContentView>
-                </tableViewCell>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="135.9375"/>
+        </scene>
+        <!--City View Controller-->
+        <scene sceneID="YDv-gu-5T1">
+            <objects>
+                <viewController storyboardIdentifier="CityViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="C25-sD-nks" customClass="CityViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kRW-w5-NYx">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wdh-eb-7B0">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                <items>
+                                    <navigationItem title="Title" id="lhf-nE-4r6">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="stop" id="kpU-Of-Rlk">
+                                            <connections>
+                                                <action selector="deleteSearchitem:" destination="C25-sD-nks" id="GSv-g4-Htt"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X6W-H3-PVv">
+                                <rect key="frame" x="0.0" y="56" width="414" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="X6W-H3-PVv" secondAttribute="height" multiplier="207:64" id="dlC-6M-CbS"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="wdh-eb-7B0" firstAttribute="top" secondItem="mGi-Rc-Vxs" secondAttribute="top" id="4Lz-cf-q3Z"/>
+                            <constraint firstItem="mGi-Rc-Vxs" firstAttribute="trailing" secondItem="X6W-H3-PVv" secondAttribute="trailing" id="9bF-tA-Gnz"/>
+                            <constraint firstItem="X6W-H3-PVv" firstAttribute="top" secondItem="wdh-eb-7B0" secondAttribute="bottom" id="F1K-ta-8NA"/>
+                            <constraint firstItem="X6W-H3-PVv" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" id="SLC-uW-nub"/>
+                            <constraint firstItem="wdh-eb-7B0" firstAttribute="trailing" secondItem="mGi-Rc-Vxs" secondAttribute="trailing" id="YoZ-BB-4fy"/>
+                            <constraint firstItem="wdh-eb-7B0" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" id="sJU-dj-sTp"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="mGi-Rc-Vxs"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="X6W-H3-PVv" id="Yki-Dt-Nav"/>
+                        <outlet property="navigationBar" destination="lhf-nE-4r6" id="O3g-pV-X3K"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FrQ-3d-COn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="968" y="136"/>
         </scene>
     </scenes>
 </document>
