@@ -1,4 +1,5 @@
 WeatherApp/Resources/OAuth.plist
+WeatherApp/Resources/OpenWeather.plist
 Pods/
 Podfile.lock
 **/.DS_Store

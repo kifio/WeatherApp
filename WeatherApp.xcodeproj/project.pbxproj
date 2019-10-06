@@ -21,6 +21,9 @@
 		C0CDBC552344FCCF00787627 /* CityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDBC542344FCCF00787627 /* CityViewController.swift */; };
 		C0ECE92E23473751006CAA88 /* ImagesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECE92D23473751006CAA88 /* ImagesClient.swift */; };
 		C0ECE93123478090006CAA88 /* SearchList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C0ECE92F23478090006CAA88 /* SearchList.xcdatamodeld */; };
+		FB03EF3E234A87CF00F69B22 /* city.list.json in Resources */ = {isa = PBXBuildFile; fileRef = FB03EF3D234A87CF00F69B22 /* city.list.json */; };
+		FB79F95E234A869000DDFD74 /* WeatherMapClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB79F95D234A869000DDFD74 /* WeatherMapClient.swift */; };
+		FBAF8A9F234A7C9300AF1BA3 /* OpenWeather.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBAF8A9E234A7C9300AF1BA3 /* OpenWeather.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 		C0ECE92D23473751006CAA88 /* ImagesClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesClient.swift; sourceTree = "<group>"; };
 		C0ECE93023478090006CAA88 /* SearchList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SearchList.xcdatamodel; sourceTree = "<group>"; };
 		E92CA9A1FB82ABB905BC5C03 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
+		FB03EF3D234A87CF00F69B22 /* city.list.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = city.list.json; sourceTree = "<group>"; };
+		FB79F95D234A869000DDFD74 /* WeatherMapClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherMapClient.swift; sourceTree = "<group>"; };
+		FBAF8A9E234A7C9300AF1BA3 /* OpenWeather.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = OpenWeather.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +98,7 @@
 				C073BE7C233ECE1E00972366 /* ViewController.swift */,
 				C0CDBC4E2344C76900787627 /* Resources */,
 				C0A3648B23433D5B00F1AE0A /* WeatherClient.swift */,
+				FB79F95D234A869000DDFD74 /* WeatherMapClient.swift */,
 				C0A36489234334C700F1AE0A /* CityCell.swift */,
 				C0CDBC522344CAAE00787627 /* Interactor.swift */,
 				C0ECE92D23473751006CAA88 /* ImagesClient.swift */,
@@ -102,11 +109,13 @@
 		C0CDBC4E2344C76900787627 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FB03EF3D234A87CF00F69B22 /* city.list.json */,
 				C073BE89233ECE1F00972366 /* Info.plist */,
 				C073BE7E233ECE1E00972366 /* Main.storyboard */,
 				C073BE84233ECE1F00972366 /* Assets.xcassets */,
 				C073BE86233ECE1F00972366 /* LaunchScreen.storyboard */,
 				C0CDBC4B2344AC8F00787627 /* OAuth.plist */,
+				FBAF8A9E234A7C9300AF1BA3 /* OpenWeather.plist */,
 				C0ECE92F23478090006CAA88 /* SearchList.xcdatamodeld */,
 			);
 			path = Resources;
@@ -181,9 +190,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C073BE88233ECE1F00972366 /* LaunchScreen.storyboard in Resources */,
+				FBAF8A9F234A7C9300AF1BA3 /* OpenWeather.plist in Resources */,
 				C073BE85233ECE1F00972366 /* Assets.xcassets in Resources */,
 				C0CDBC4C2344AC8F00787627 /* OAuth.plist in Resources */,
 				C073BE80233ECE1E00972366 /* Main.storyboard in Resources */,
+				FB03EF3E234A87CF00F69B22 /* city.list.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB79F95E234A869000DDFD74 /* WeatherMapClient.swift in Sources */,
 				C073BE7D233ECE1E00972366 /* ViewController.swift in Sources */,
 				C0A3648A234334C700F1AE0A /* CityCell.swift in Sources */,
 				C0ECE92E23473751006CAA88 /* ImagesClient.swift in Sources */,

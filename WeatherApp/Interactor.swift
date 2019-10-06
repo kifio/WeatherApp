@@ -11,28 +11,11 @@ import CoreData
 import UIKit
 
 class Interactor {
-    
-    struct Location : Codable {
-        var city: String?
-        var country: String?
-    }
-    
-    struct Condition : Codable {
-        var temperature: Float
-    }
-    
-    struct CurrentObservation: Codable {
-        var condition: Condition
-    }
-    
+
     struct City: Codable {
-        
-        var location: Location
-        var current_observation: CurrentObservation?
-        
-        func getTemperature() -> Float? {
-            return current_observation?.condition.temperature
-        }
+        var temperature: Double
+        var name: String
+        var country: String
     }
     
     struct Image: Codable {
@@ -49,17 +32,17 @@ class Interactor {
     
     private let decoder = JSONDecoder()
     private let weatherClient = WeatherClient()
+    private let weatherMapClient = WeatherMapClient()
     private let imagesClient = ImagesClient()
     
     func requestCitiesFromRemote(query: String,
                                  failure: @escaping (_ error: String) -> Void,
                                  success: @escaping (_ response: [City]) -> Void) {
-        weatherClient.weather(location: query, failure: failure, success: { data in
+        weatherMapClient.weather(query: query, onFail: failure, onSuccess: { data in
             do {
                 let city = try self.decoder.decode(City.self, from: data)
                 success([city])
             } catch {
-                //                print("Cannot decode content of OAuth.plist to OAuthKeys structure")
                 print(String(decoding:data, as: UTF8.self))
                 success([City]())
             }
@@ -116,18 +99,18 @@ class Interactor {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "SearchItem")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
         
-        do {
-            var cities = [City]()
-            let managedObjects = try managedContext.fetch(fetchRequest)
-            for managedObject in managedObjects {
-                let location = Location(city: managedObject.value(forKey: "city_name") as? String, country: nil)
-                let city = City(location: location, current_observation: nil)
-                cities.append(city)
-            }
-            return cities
-        } catch {
-            print("Could not fetch.")
-            return []
-        }
+//        do {
+//            var cities = [City]()
+//            let managedObjects = try managedContext.fetch(fetchRequest)
+//            for managedObject in managedObjects {
+//                let location = Location(city: managedObject.value(forKey: "city_name") as? String, country: nil)
+//                let city = City(location: location, current_observation: nil)
+//                cities.append(city)
+//            }
+//            return cities
+//        } catch {
+//            print("Could not fetch.")
+//            return []
+//        }
     }
 }
