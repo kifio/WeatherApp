@@ -18,15 +18,17 @@ class CityViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationBar.title = self.city?.location.city
-        interactor.loadImage(cityName: (self.city?.location.city!)!, failure: { err in
-            print(err)
-        }, success: { data in
-            let uiImage = UIImage(data: data)
-            self.imageView.contentMode = .scaleAspectFill;
-            self.imageView.clipsToBounds = true;
-            self.imageView.image = uiImage
-        })
+        if let cityName = self.city?.name {
+            navigationBar.title = cityName
+            interactor.loadImage(cityName: cityName, failure: { err in
+                print(err)
+            }, success: { data in
+                let uiImage = UIImage(data: data)
+                self.imageView.contentMode = .scaleAspectFill;
+                self.imageView.clipsToBounds = true;
+                self.imageView.image = uiImage
+            })
+        }
     }
     
     func setCity(_ city: Interactor.City) {

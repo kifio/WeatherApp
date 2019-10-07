@@ -15,16 +15,39 @@ class WeatherMapClient: NSObject {
         var appId: String
     }
     
-    private struct Coord: Codable {
-        var lon: Double
-        var lat: Double
+    private struct OpenWeatherResponse: Codable {
+        var cnt: Int
+        var list: [OpenWeatherItem]
     }
     
-    private struct City: Codable {
+    private struct OpenWeatherWeather: Codable {
+        var main: String
+        var description: String
+    }
+    
+    private struct OpenWeatherTemperature: Codable {
+        var temp: Double
+        var pressure: Double
+    }
+    
+    private struct OpenWeatherInfo: Codable {
+        var country: String
+        var sunrise: Int64
+        var sunset: Int64
+    }
+    
+    private struct OpenWeatherItem: Codable {
+        var id: Int
+        var name: String
+        var weather: [OpenWeatherWeather]
+        var main: OpenWeatherTemperature
+        var sys: OpenWeatherInfo
+    }
+    
+    private struct OpenWeatherCity: Codable {
         var id: Int
         var name: String
         var country: String
-        var coord: Coord
     }
     
     private let baseUrl = "http://api.openweathermap.org/data/2.5"
@@ -32,13 +55,14 @@ class WeatherMapClient: NSObject {
     private let params = "id=%s"
     private let decoder = JSONDecoder()
     private var credentials: OpenWeatherKeys!
-    private var cities: [City]!
+    private var cities: [OpenWeatherCity]!
+    private var results: [OpenWeatherItem]!
     private var request: DataRequest? = nil
     
     override init() {
         super.init()
         initAppId()
-        initCities()
+        initCitiesList()
     }
     
     private func initAppId() {
@@ -59,37 +83,55 @@ class WeatherMapClient: NSObject {
         }
     }
     
-    private func initCities() {
+    private func initCitiesList() {
         let file = Bundle.main.path(forResource: "city.list", ofType: "json")
         
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: file!))
-            cities = try self.decoder.decode([City].self, from: data)
+            cities = try self.decoder.decode([OpenWeatherCity].self, from: data)
         } catch {
-            cities = [City]()
-            print("Cannot parse Cities list for OpenWeatherMap.")
+            cities = [OpenWeatherCity]()
+            print(error)
         }
         
-        print("Cities count: \(cities.count)")
+        print("results count: \(cities.count)")
     }
     
     func weather(query: String,
                     onFail: @escaping (_ error: String) -> Void,
-                    onSuccess: @escaping (_ response: Data) -> Void) {
+                    onSuccess: @escaping (_ response: [Interactor.City]) -> Void) {
+              
+        var filteredResults = [OpenWeatherCity]()
         
-        let filteredCities = cities
-            .filter({(item: City) -> Bool in
+        self.cities
+            .filter({(item: OpenWeatherCity) -> Bool in
                 return item.name.lowercased().starts(with: query.lowercased())
             })
-            .map({(item: City) -> String in
-                return String(item.id)
+            .prefix(10)
+            .forEach({ item in
+                var isValid = true
+                for city in filteredResults {
+                    if item.name == city.name && item.country == city.country {
+                        isValid = false
+                    }
+                }
+                
+                if isValid {
+                    filteredResults.append(item)
+                }
             })
         
-        let ids = "id=\(filteredCities.prefix(5).joined(separator: ","))"
+        let ids = filteredResults
+            .map({(item: OpenWeatherCity) -> String in
+                return String(item.id)
+            })
+            .joined(separator: ",")
+        
+        let id = "id=\(ids)"
         let units = "&units=imperial"
         let appid = "&appId=\(self.credentials.appId)"
     
-        let request = "\(baseUrl)\(path)\(ids)\(units)\(appid)"
+        let request = "\(baseUrl)\(path)\(id)\(units)\(appid)"
         print(request)
         
         if self.request != nil {
@@ -100,10 +142,30 @@ class WeatherMapClient: NSObject {
         self.request = AF.request(request)
         self.request?.response { response in
             if let data = response.data {
-                onSuccess(data)
+                onSuccess(self.parseResponse(data))
             } else {
                 onFail(response.error?.errorDescription ?? "")
             }
+        }
+    }
+    
+    private func parseResponse(_ response: Data) -> [Interactor.City] {
+        do {
+            let results = try self.decoder.decode(OpenWeatherResponse.self, from: response)
+            return results.list.map({(item: OpenWeatherItem) -> Interactor.City in
+                return Interactor.City(
+                    temperature: item.main.temp,
+                    name: item.name,
+                    country: item.sys.country,
+                    main: item.weather[0].main,
+                    description: item.weather[0].description,
+                    pressure: item.main.pressure,
+                    sunrise: item.sys.sunrise,
+                    sunset: item.sys.sunset)
+            })
+        } catch {
+            print(error)
+            return [Interactor.City]()
         }
     }
 }

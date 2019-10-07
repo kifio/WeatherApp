@@ -14,6 +14,7 @@
 		C073BE80233ECE1E00972366 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C073BE7E233ECE1E00972366 /* Main.storyboard */; };
 		C073BE85233ECE1F00972366 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C073BE84233ECE1F00972366 /* Assets.xcassets */; };
 		C073BE88233ECE1F00972366 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C073BE86233ECE1F00972366 /* LaunchScreen.storyboard */; };
+		C08A2DF1234B3BA700245407 /* OpenWeather.plist in Resources */ = {isa = PBXBuildFile; fileRef = C08A2DF0234B3BA700245407 /* OpenWeather.plist */; };
 		C0A3648A234334C700F1AE0A /* CityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A36489234334C700F1AE0A /* CityCell.swift */; };
 		C0A3648C23433D5B00F1AE0A /* WeatherClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3648B23433D5B00F1AE0A /* WeatherClient.swift */; };
 		C0CDBC4C2344AC8F00787627 /* OAuth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0CDBC4B2344AC8F00787627 /* OAuth.plist */; };
@@ -37,6 +38,7 @@
 		C073BE84233ECE1F00972366 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Resources/Assets.xcassets; sourceTree = "<group>"; };
 		C073BE87233ECE1F00972366 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C073BE89233ECE1F00972366 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
+		C08A2DF0234B3BA700245407 /* OpenWeather.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = OpenWeather.plist; sourceTree = "<group>"; };
 		C0A36489234334C700F1AE0A /* CityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCell.swift; sourceTree = "<group>"; };
 		C0A3648B23433D5B00F1AE0A /* WeatherClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherClient.swift; sourceTree = "<group>"; };
 		C0CDBC4B2344AC8F00787627 /* OAuth.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = OAuth.plist; path = ../Resources/OAuth.plist; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				C0CDBC4B2344AC8F00787627 /* OAuth.plist */,
 				FBAF8A9E234A7C9300AF1BA3 /* OpenWeather.plist */,
 				C0ECE92F23478090006CAA88 /* SearchList.xcdatamodeld */,
+				C08A2DF0234B3BA700245407 /* OpenWeather.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C08A2DF1234B3BA700245407 /* OpenWeather.plist in Resources */,
 				C073BE88233ECE1F00972366 /* LaunchScreen.storyboard in Resources */,
 				FBAF8A9F234A7C9300AF1BA3 /* OpenWeather.plist in Resources */,
 				C073BE85233ECE1F00972366 /* Assets.xcassets in Resources */,

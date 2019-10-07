@@ -16,6 +16,11 @@ class Interactor {
         var temperature: Double
         var name: String
         var country: String
+        var main: String
+        var description: String
+        var pressure: Double
+        var sunrise: Int64
+        var sunset: Int64
     }
     
     struct Image: Codable {
@@ -38,15 +43,7 @@ class Interactor {
     func requestCitiesFromRemote(query: String,
                                  failure: @escaping (_ error: String) -> Void,
                                  success: @escaping (_ response: [City]) -> Void) {
-        weatherMapClient.weather(query: query, onFail: failure, onSuccess: { data in
-            do {
-                let city = try self.decoder.decode(City.self, from: data)
-                success([city])
-            } catch {
-                print(String(decoding:data, as: UTF8.self))
-                success([City]())
-            }
-        })
+        weatherMapClient.weather(query: query, onFail: failure, onSuccess: success)
     }
     
     func loadImage(cityName: String,
@@ -55,7 +52,7 @@ class Interactor {
         
         imagesClient.requestUrbanArea(cityName: cityName, onFail: failure, onSuccess: { response in
             do {
-                print(String(data: response, encoding: .utf8))
+//                print(String(data: response, encoding: UTF8.self))
                 let urbanArea = try self.decoder.decode(UrbanArea.self, from: response)
                 self.downlodImage(data: urbanArea, failure: failure, success: success)
             } catch {
@@ -99,7 +96,7 @@ class Interactor {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "SearchItem")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
         
-//        do {
+        do {
 //            var cities = [City]()
 //            let managedObjects = try managedContext.fetch(fetchRequest)
 //            for managedObject in managedObjects {
@@ -107,10 +104,11 @@ class Interactor {
 //                let city = City(location: location, current_observation: nil)
 //                cities.append(city)
 //            }
-//            return cities
-//        } catch {
-//            print("Could not fetch.")
-//            return []
-//        }
+            return []
+        } catch {
+            print("Could not fetch.")
+            return []
+        }
     }
 }
+

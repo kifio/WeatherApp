@@ -26,12 +26,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         let city = cities[indexPath.row]
-        cell.cityLabel.text = city.location.city
-        
-        if let temperature = city.getTemperature() {
-            cell.setTemperature(fahrenheits: temperature)
-        }
-        
+        cell.cityLabel.text = "\(city.name),\(city.country)"
+        cell.setTemperature(fahrenheits: city.temperature)
         return cell
     }
     
@@ -39,10 +35,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
         let city = cities[indexPath.row]
-        if let cityName = city.location.city {
-            weatherInteractor.saveSearchItemToCoreData(cityName: cityName)
-        }
-        
+        weatherInteractor.saveSearchItemToCoreData(cityName: city.name)
+
         let cityViewController = storyBoard.instantiateViewController(withIdentifier: "CityViewController") as! CityViewController
         cityViewController.setCity(city)
         self.present(cityViewController, animated: true, completion: nil)
