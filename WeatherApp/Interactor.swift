@@ -11,16 +11,16 @@ import CoreData
 import UIKit
 
 class Interactor {
-
+    
     struct City: Codable {
-        var temperature: Double
+        var temperature: Double = 0.0
         var name: String
         var country: String
-        var main: String
-        var description: String
-        var pressure: Double
-        var sunrise: Int64
-        var sunset: Int64
+        var main: String = ""
+        var description: String = ""
+        var pressure: Double = 0.0
+        var sunrise: Int64 = 0
+        var sunset: Int64 = 0
     }
     
     struct Image: Codable {
@@ -52,7 +52,6 @@ class Interactor {
         
         imagesClient.requestUrbanArea(cityName: cityName, onFail: failure, onSuccess: { response in
             do {
-//                print(String(data: response, encoding: UTF8.self))
                 let urbanArea = try self.decoder.decode(UrbanArea.self, from: response)
                 self.downlodImage(data: urbanArea, failure: failure, success: success)
             } catch {
@@ -69,21 +68,23 @@ class Interactor {
         }
     }
     
-    func saveSearchItemToCoreData(cityName: String) {
+    func saveSearchItemToCoreData(_ city: City) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
         
         let managedContext = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "SearchItem", in: managedContext)!
+        
         let searchItem = NSManagedObject(entity: entity, insertInto: managedContext)
-        searchItem.setValue(cityName, forKeyPath: "city_name")
+        searchItem.setValue(city.name, forKeyPath: "city_name")
+        searchItem.setValue(city.country, forKeyPath: "country")
         searchItem.setValue(Date(), forKey: "timestamp")
         
         do {
             try managedContext.save()
         } catch {
-            print("Could not save. \(cityName)")
+            print("Could not save. \(city.name)")
         }
     }
     
@@ -91,23 +92,50 @@ class Interactor {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return []
         }
-         
+        
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "SearchItem")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
         
         do {
-//            var cities = [City]()
-//            let managedObjects = try managedContext.fetch(fetchRequest)
-//            for managedObject in managedObjects {
-//                let location = Location(city: managedObject.value(forKey: "city_name") as? String, country: nil)
-//                let city = City(location: location, current_observation: nil)
-//                cities.append(city)
-//            }
-            return []
+            var cities = [City]()
+            let managedObjects = try managedContext.fetch(fetchRequest)
+            for managedObject in managedObjects {
+                let cityName = managedObject.value(forKey: "city_name") as! String
+                let country = managedObject.value(forKey: "country") as! String
+                let city = City(name: cityName, country: country)
+                cities.append(city)
+            }
+            return cities
         } catch {
             print("Could not fetch.")
             return []
+        }
+    }
+    
+    func deleteSavedSearchResult(_ city: City) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchItem")
+        fetchRequest.predicate = NSPredicate(format: "(city_name==%@) AND (country==%@)", city.name, city.country)
+        
+        do {
+            let managedObjects = try managedContext.fetch(fetchRequest)
+            for managedObject in managedObjects {
+                if let o = managedObject as? NSManagedObject {
+                    managedContext.delete(o)
+                    do {
+                        try managedContext.save()
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        } catch {
+            print(error)
         }
     }
 }

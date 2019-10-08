@@ -13,21 +13,22 @@ class CityViewController: UIViewController {
     @IBOutlet weak var navigationBar: UINavigationItem!
     @IBOutlet weak var imageView: UIImageView!
  
-    private let interactor = Interactor()
     private var city: Interactor.City? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let cityName = self.city?.name {
-            navigationBar.title = cityName
-            interactor.loadImage(cityName: cityName, failure: { err in
-                print(err)
-            }, success: { data in
-                let uiImage = UIImage(data: data)
-                self.imageView.contentMode = .scaleAspectFill;
-                self.imageView.clipsToBounds = true;
-                self.imageView.image = uiImage
-            })
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            if let cityName = self.city?.name {
+                navigationBar.title = cityName
+                appDelegate.getInteractor().loadImage(cityName: cityName, failure: { err in
+                    print(err)
+                }, success: { data in
+                    let uiImage = UIImage(data: data)
+                    self.imageView.contentMode = .scaleAspectFill;
+                    self.imageView.clipsToBounds = true;
+                    self.imageView.image = uiImage
+                })
+            }
         }
     }
     

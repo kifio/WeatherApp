@@ -25,7 +25,10 @@ class CityCell: UITableViewCell {
     }
     
     func setTemperature(fahrenheits: Double) {
-        weatherLabel.text = "\(fahrenheits)°F"
+        if fahrenheits > 0 {
+            weatherLabel.text = "\(fahrenheits)°F"
+        } else {
+            weatherLabel.text = ""
+        }
     }
-
 }
