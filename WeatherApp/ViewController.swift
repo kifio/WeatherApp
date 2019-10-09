@@ -54,8 +54,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.updateTableView(appDelegate.getInteractor().getSavedSearchResults())
             } else {
                 appDelegate.getInteractor().requestCitiesFromRemote(query: searchText, failure: { msg in
-                    //            let alertController = UIAlertController(title: "Alert", message: msg, preferredStyle: .alert)
-                    //            self.present(alertController, animated: true, completion: nil)
+                    print(msg)
                 }, success: { cities in
                     self.updateTableView(cities)
                 })
@@ -77,7 +76,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
-    private func updateTableView(_ cities: [Interactor.City]) {
+    func updateTableView(_ cities: [Interactor.City]) {
         self.cities.removeAll()
         self.cities += cities
         self.citiesView.reloadData()

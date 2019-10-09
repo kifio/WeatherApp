@@ -16,7 +16,6 @@
 		C073BE88233ECE1F00972366 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C073BE86233ECE1F00972366 /* LaunchScreen.storyboard */; };
 		C08A2DF1234B3BA700245407 /* OpenWeather.plist in Resources */ = {isa = PBXBuildFile; fileRef = C08A2DF0234B3BA700245407 /* OpenWeather.plist */; };
 		C0A3648A234334C700F1AE0A /* CityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A36489234334C700F1AE0A /* CityCell.swift */; };
-		C0A3648C23433D5B00F1AE0A /* WeatherClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3648B23433D5B00F1AE0A /* WeatherClient.swift */; };
 		C0CDBC4C2344AC8F00787627 /* OAuth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0CDBC4B2344AC8F00787627 /* OAuth.plist */; };
 		C0CDBC532344CAAE00787627 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDBC522344CAAE00787627 /* Interactor.swift */; };
 		C0CDBC552344FCCF00787627 /* CityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDBC542344FCCF00787627 /* CityViewController.swift */; };
@@ -40,7 +39,6 @@
 		C073BE89233ECE1F00972366 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		C08A2DF0234B3BA700245407 /* OpenWeather.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = OpenWeather.plist; sourceTree = "<group>"; };
 		C0A36489234334C700F1AE0A /* CityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCell.swift; sourceTree = "<group>"; };
-		C0A3648B23433D5B00F1AE0A /* WeatherClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherClient.swift; sourceTree = "<group>"; };
 		C0CDBC4B2344AC8F00787627 /* OAuth.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = OAuth.plist; path = ../Resources/OAuth.plist; sourceTree = "<group>"; };
 		C0CDBC522344CAAE00787627 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		C0CDBC542344FCCF00787627 /* CityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CityViewController.swift; path = WeatherApp/CityViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -99,7 +97,6 @@
 				C073BE7A233ECE1E00972366 /* SceneDelegate.swift */,
 				C073BE7C233ECE1E00972366 /* ViewController.swift */,
 				C0CDBC4E2344C76900787627 /* Resources */,
-				C0A3648B23433D5B00F1AE0A /* WeatherClient.swift */,
 				FB79F95D234A869000DDFD74 /* WeatherMapClient.swift */,
 				C0A36489234334C700F1AE0A /* CityCell.swift */,
 				C0CDBC522344CAAE00787627 /* Interactor.swift */,
@@ -257,7 +254,6 @@
 				C0ECE92E23473751006CAA88 /* ImagesClient.swift in Sources */,
 				C073BE79233ECE1E00972366 /* AppDelegate.swift in Sources */,
 				C073BE7B233ECE1E00972366 /* SceneDelegate.swift in Sources */,
-				C0A3648C23433D5B00F1AE0A /* WeatherClient.swift in Sources */,
 				C0ECE93123478090006CAA88 /* SearchList.xcdatamodeld in Sources */,
 				C0CDBC532344CAAE00787627 /* Interactor.swift in Sources */,
 				C0CDBC552344FCCF00787627 /* CityViewController.swift in Sources */,

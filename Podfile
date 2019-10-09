@@ -7,5 +7,4 @@ target 'WeatherApp' do
 
   # Pods for WeatherApp 
   pod 'Alamofire', '~> 5.0.0-rc.2'
-  pod 'OAuthSwift', '~> 2.0.0'
 end

@@ -96,9 +96,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                 <items>
                                     <navigationItem title="Title" id="lhf-nE-4r6">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" image="trash" catalog="system" id="usG-7C-nrf">
+                                            <connections>
+                                                <action selector="deleteSearchItem:" destination="C25-sD-nks" id="BL2-um-vKg"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="stop" id="kpU-Of-Rlk">
                                             <connections>
-                                                <action selector="deleteSearchitem:" destination="C25-sD-nks" id="GSv-g4-Htt"/>
+                                                <action selector="closeViewController:" destination="C25-sD-nks" id="DTD-nj-njb"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -132,4 +137,7 @@
             <point key="canvasLocation" x="968" y="136"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="trash" catalog="system" width="60" height="64"/>
+    </resources>
 </document>

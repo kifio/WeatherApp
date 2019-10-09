@@ -3,3 +3,4 @@ WeatherApp/Resources/OpenWeather.plist
 Pods/
 Podfile.lock
 **/.DS_Store
+**/.idea

@@ -36,13 +36,19 @@ class Interactor {
     }
     
     private let decoder = JSONDecoder()
-    private let weatherClient = WeatherClient()
     private let weatherMapClient = WeatherMapClient()
     private let imagesClient = ImagesClient()
     
     func requestCitiesFromRemote(query: String,
                                  failure: @escaping (_ error: String) -> Void,
                                  success: @escaping (_ response: [City]) -> Void) {
+        let cachedCities = getSavedSearchResults()
+        for city in cachedCities {
+            if city.name.lowercased().starts(with: query.lowercased()) {
+                success([city])
+                return
+            }
+        }
         weatherMapClient.weather(query: query, onFail: failure, onSuccess: success)
     }
     
@@ -53,16 +59,16 @@ class Interactor {
         imagesClient.requestUrbanArea(cityName: cityName, onFail: failure, onSuccess: { response in
             do {
                 let urbanArea = try self.decoder.decode(UrbanArea.self, from: response)
-                self.downlodImage(data: urbanArea, failure: failure, success: success)
+                self.downloadImage(data: urbanArea, failure: failure, success: success)
             } catch {
                 failure("Cannot parse UrbanArea")
             }
         })
     }
     
-    private func downlodImage(data: UrbanArea,
-                              failure: @escaping (_ error: String) -> Void,
-                              success: @escaping (_ response: Data) -> Void) {
+    private func downloadImage(data: UrbanArea,
+                               failure: @escaping (_ error: String) -> Void,
+                               success: @escaping (_ response: Data) -> Void) {
         if data.photos.count > 0 {
             imagesClient.downloadImage(url: data.photos[0].image.web, onFail: failure, onSuccess: success)
         }

@@ -13,7 +13,8 @@ class CityViewController: UIViewController {
     @IBOutlet weak var navigationBar: UINavigationItem!
     @IBOutlet weak var imageView: UIImageView!
  
-    private var city: Interactor.City? = nil
+    fileprivate var city: Interactor.City? = nil
+    fileprivate var isRemovable = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,8 +36,37 @@ class CityViewController: UIViewController {
     func setCity(_ city: Interactor.City) {
         self.city = city
     }
+
+    func setRemoveOption(isRemovable: Bool) {
+
+    }
     
-    @IBAction func deleteSearchitem(_ sender: Any) {
+    @IBAction func closeViewController(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction func deleteSearchItem(_ sender: Any) {
+        let alertController = UIAlertController(title: "Alert",
+            message: "City will be deleted.\n Operation cannot be undone.", 
+            preferredStyle: .alert)
+
+        let actionYes = UIAlertAction(title: "Just Do it!",
+            style: .destructive,
+            handler: { action in
+                if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                    if let city = self.city {
+                        appDelegate.getInteractor().deleteSavedSearchResult(city)
+                    }
+
+                    if let presenter = self.presentingViewController as? ViewController {
+                        presenter.updateTableView(appDelegate.getInteractor().getSavedSearchResults())
+                    }
+
+                    self.dismiss(animated: true, completion: nil)
+                }
+            })
+
+        alertController.addAction(actionYes)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
