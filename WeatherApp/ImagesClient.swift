@@ -7,9 +7,13 @@
 //
 
 import UIKit
-import Alamofire
+import UnsplashPhotoPicker
 
 class ImagesClient {
+
+    init() {
+        UnsplashPhotoPicker()
+    }
     
     struct Image: Codable {
         var mobile: String
