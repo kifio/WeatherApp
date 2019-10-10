@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import UnsplashPhotoPicker
 
 class ImagesClient {
 

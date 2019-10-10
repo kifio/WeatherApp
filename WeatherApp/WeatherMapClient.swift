@@ -72,14 +72,14 @@ class WeatherMapClient: NSObject {
         }
         
         guard let keysFile = FileManager.default.contents(atPath: path) else {
-            print("Cannot get content from OAuth.plist")
+            print("Cannot get content from OpenWeather.plist")
             return
         }
         
         do {
             credentials = try PropertyListDecoder().decode(OpenWeatherKeys.self, from: keysFile)
         } catch {
-            print("Cannot decode content of OAuth.plist to OAuthKeys structure")
+            print("Cannot decode content of OpenWeather.plist to OpenWeatherKeys structure")
         }
     }
     

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import WebKit
 
-class CityViewController: UIViewController {
+class CityViewController: UIViewController, WKNavigationDelegate {
     
     @IBOutlet weak var navigationBar: UINavigationItem!
     @IBOutlet weak var imageView: UIImageView!
@@ -69,4 +70,9 @@ class CityViewController: UIViewController {
         alertController.addAction(actionYes)
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    private func authorizeUnsplash() {
+        
+    }
+
 }
