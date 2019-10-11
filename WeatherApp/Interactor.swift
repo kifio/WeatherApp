@@ -53,26 +53,13 @@ class Interactor {
     }
     
     func loadImage(cityName: String,
+                   w: Int, h: Int,
                    failure: @escaping (_ error: String) -> Void,
                    success: @escaping (_ response: Data) -> Void) {
         
-        imagesClient.requestUrbanArea(cityName: cityName, onFail: failure, onSuccess: { response in
-            do {
-                let urbanArea = try self.decoder.decode(UrbanArea.self, from: response)
-                self.downloadImage(data: urbanArea, failure: failure, success: success)
-            } catch {
-                failure("Cannot parse UrbanArea")
-            }
-        })
+        imagesClient.downloadImage(cityName: cityName, w: w, h: h, failure: failure, success: success)
     }
-    
-    private func downloadImage(data: UrbanArea,
-                               failure: @escaping (_ error: String) -> Void,
-                               success: @escaping (_ response: Data) -> Void) {
-        if data.photos.count > 0 {
-            imagesClient.downloadImage(url: data.photos[0].image.web, onFail: failure, onSuccess: success)
-        }
-    }
+
     
     func saveSearchItemToCoreData(_ city: City) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {

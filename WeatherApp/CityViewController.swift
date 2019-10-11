@@ -22,7 +22,10 @@ class CityViewController: UIViewController, WKNavigationDelegate {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             if let cityName = self.city?.name {
                 navigationBar.title = cityName
-                appDelegate.getInteractor().loadImage(cityName: cityName, failure: { err in
+                let w = Int(self.view.frame.width)
+                let h = Int(self.view.frame.height)
+
+                appDelegate.getInteractor().loadImage(cityName: cityName, w: w, h: h, failure: { err in
                     print(err)
                 }, success: { data in
                     let uiImage = UIImage(data: data)
@@ -30,6 +33,11 @@ class CityViewController: UIViewController, WKNavigationDelegate {
                     self.imageView.clipsToBounds = true;
                     self.imageView.image = uiImage
                 })
+
+                let overlay = UIView(frame: imageView.frame);
+                overlay.layer.backgroundColor = UIColor.black.cgColor
+                overlay.layer.opacity = 0.3
+                self.view.addSubview(overlay);
             }
         }
     }

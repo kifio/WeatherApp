@@ -7,51 +7,25 @@
 //
 
 import UIKit
+import Alamofire
 
 class ImagesClient {
+    
+    private let baseUrl = "https://source.unsplash.com"
 
-    init() {
-        UnsplashPhotoPicker()
-    }
-    
-    struct Image: Codable {
-        var mobile: String
-    }
-    
-    struct Photo: Codable {
-        var image: Image
-    }
-    
-    struct UrbanArea: Codable {
-        var photos: [Photo]
-    }
-    
-    private let baseUrl = "https://api.teleport.org/api/urban_areas/slug:"
-    
-    func requestUrbanArea(cityName: String,
-                         onFail: @escaping (_ error: String) -> Void,
-                         onSuccess: @escaping (_ response: Data) -> Void) {
-        
-        let stringUrl = baseUrl + cityName.lowercased() + "/images/"
-        print(stringUrl)
-        
-        AF.request(stringUrl).response { response in
+    func downloadImage(cityName: String,
+                       w: Int, h: Int,
+                       failure: @escaping (_ error: String) -> Void,
+                       success: @escaping (_ response: Data) -> Void) {
+
+        let resolution = "/\(w)x\(h)"
+        let city = "/?\(cityName.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil))"
+
+        AF.request("\(baseUrl)\(resolution)\(city)").response { response in
             if let data = response.data {
-                onSuccess(data)
+                success(data)
             } else {
-                onFail(response.error?.errorDescription ?? "")
-            }
-        }
-    }
-    
-    func downloadImage(url: String,
-                       onFail: @escaping (_ error: String) -> Void,
-                       onSuccess: @escaping (_ response: Data) -> Void) {
-        AF.request(url).response { response in
-            if let data = response.data {
-                onSuccess(data)
-            } else {
-                onFail(response.error?.errorDescription ?? "")
+                failure(response.error?.errorDescription ?? "")
             }
         }
     }
