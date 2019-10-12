@@ -13,6 +13,7 @@ import UIKit
 class Interactor {
     
     struct City: Codable {
+        var id: String
         var temperature: Double = 0.0
         var name: String
         var country: String
@@ -21,6 +22,7 @@ class Interactor {
         var pressure: Double = 0.0
         var sunrise: Int64 = 0
         var sunset: Int64 = 0
+        var fromCache: Bool = false
     }
     
     struct Image: Codable {
@@ -39,17 +41,30 @@ class Interactor {
     private let weatherMapClient = WeatherMapClient()
     private let imagesClient = ImagesClient()
     
-    func requestCitiesFromRemote(query: String,
-                                 failure: @escaping (_ error: String) -> Void,
-                                 success: @escaping (_ response: [City]) -> Void) {
+    func requestCities(query: String,
+                       failure: @escaping (_ error: String) -> Void,
+                       success: @escaping (_ response: [City]) -> Void) {
+        if let cities = getFromStorage(query) {
+            success(cities)
+        } else {
+            weatherMapClient.weather(query: query, failure: failure, success: success)
+        }
+    }
+    
+    private func getFromStorage(_ query: String) -> [City]? {
         let cachedCities = getSavedSearchResults()
         for city in cachedCities {
             if city.name.lowercased().starts(with: query.lowercased()) {
-                success([city])
-                return
+                return [city]
             }
         }
-        weatherMapClient.weather(query: query, onFail: failure, onSuccess: success)
+        return nil
+    }
+    
+    func requestCityById(id: String,
+                         failure: @escaping (_ error: String) -> Void,
+                         success: @escaping (_ response: City) -> Void) {
+        weatherMapClient.weather(id: id, failure: failure, success: success)
     }
     
     func loadImage(cityName: String,
@@ -59,7 +74,10 @@ class Interactor {
         
         imagesClient.downloadImage(cityName: cityName, w: w, h: h, failure: failure, success: success)
     }
-
+    
+    func cancelLastRequest() {
+        weatherMapClient.cancelLastRequest()
+    }
     
     func saveSearchItemToCoreData(_ city: City) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
@@ -72,6 +90,7 @@ class Interactor {
         let searchItem = NSManagedObject(entity: entity, insertInto: managedContext)
         searchItem.setValue(city.name, forKeyPath: "city_name")
         searchItem.setValue(city.country, forKeyPath: "country")
+        searchItem.setValue(city.id, forKeyPath: "id")
         searchItem.setValue(Date(), forKey: "timestamp")
         
         do {
@@ -96,7 +115,9 @@ class Interactor {
             for managedObject in managedObjects {
                 let cityName = managedObject.value(forKey: "city_name") as! String
                 let country = managedObject.value(forKey: "country") as! String
-                let city = City(name: cityName, country: country)
+                let id = managedObject.value(forKey: "id") as! String
+                var city = City(id: id, name: cityName, country: country)
+                city.fromCache = true
                 cities.append(city)
             }
             return cities
@@ -113,7 +134,7 @@ class Interactor {
         
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchItem")
-        fetchRequest.predicate = NSPredicate(format: "(city_name==%@) AND (country==%@)", city.name, city.country)
+        fetchRequest.predicate = NSPredicate(format: "(id==%@)", city.id)
         
         do {
             let managedObjects = try managedContext.fetch(fetchRequest)

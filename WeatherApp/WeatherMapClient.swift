@@ -97,10 +97,28 @@ class WeatherMapClient: NSObject {
         print("results count: \(cities.count)")
     }
     
+    func weather(id: String,
+                 failure: @escaping (_ error: String) -> Void,
+                 success: @escaping (_ response: Interactor.City) -> Void) {
+        makeRequest("id=\(id)")
+        self.request?.response { response in
+            if let data = response.data {
+                let cities = self.parseItems(data)
+                if cities.count == 0 {
+                    failure("Cannot parce response for city \(id)")
+                } else {
+                    success(cities[0])
+                }
+            } else {
+                failure(response.error?.errorDescription ?? "")
+            }
+        }
+    }
+    
     func weather(query: String,
-                    onFail: @escaping (_ error: String) -> Void,
-                    onSuccess: @escaping (_ response: [Interactor.City]) -> Void) {
-              
+                 failure: @escaping (_ error: String) -> Void,
+                 success: @escaping (_ response: [Interactor.City]) -> Void) {
+        
         var filteredResults = [OpenWeatherCity]()
         
         self.cities
@@ -127,10 +145,20 @@ class WeatherMapClient: NSObject {
             })
             .joined(separator: ",")
         
-        let id = "id=\(ids)"
+        makeRequest("id=\(ids)")
+        self.request?.response { response in
+            if let data = response.data {
+                success(self.parseItems(data))
+            } else {
+                failure(response.error?.errorDescription ?? "")
+            }
+        }
+    }
+    
+    private func makeRequest(_ id: String) {
         let units = "&units=imperial"
         let appid = "&appId=\(self.credentials.appId)"
-    
+        
         let request = "\(baseUrl)\(path)\(id)\(units)\(appid)"
         print(request)
         
@@ -140,32 +168,35 @@ class WeatherMapClient: NSObject {
         }
         
         self.request = AF.request(request)
-        self.request?.response { response in
-            if let data = response.data {
-                onSuccess(self.parseResponse(data))
-            } else {
-                onFail(response.error?.errorDescription ?? "")
-            }
-        }
     }
     
-    private func parseResponse(_ response: Data) -> [Interactor.City] {
+    func cancelLastRequest() {
+        self.request?.cancel()
+        self.request = nil
+    }
+    
+    private func parseItems(_ response: Data) -> [Interactor.City] {
         do {
             let results = try self.decoder.decode(OpenWeatherResponse.self, from: response)
             return results.list.map({(item: OpenWeatherItem) -> Interactor.City in
-                return Interactor.City(
-                    temperature: item.main.temp,
-                    name: item.name,
-                    country: item.sys.country,
-                    main: item.weather[0].main,
-                    description: item.weather[0].description,
-                    pressure: item.main.pressure,
-                    sunrise: item.sys.sunrise,
-                    sunset: item.sys.sunset)
+                return mapItemToCity(item)
             })
         } catch {
             print(error)
             return [Interactor.City]()
         }
+    }
+    
+    private func mapItemToCity(_ item: OpenWeatherItem) -> Interactor.City {
+        return Interactor.City(
+            id: String(item.id),
+            temperature: item.main.temp,
+            name: item.name,
+            country: item.sys.country,
+            main: item.weather[0].main,
+            description: item.weather[0].description,
+            pressure: item.main.pressure,
+            sunrise: item.sys.sunrise,
+            sunset: item.sys.sunset)
     }
 }

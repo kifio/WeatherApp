@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -113,27 +113,91 @@
                                 <rect key="frame" x="0.0" y="56" width="414" height="752"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9pD-c5-MQ6">
+                                <rect key="frame" x="0.0" y="56" width="414" height="752"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="24C" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9td-N6-uBd">
+                                <rect key="frame" x="16" y="392" width="95.5" height="58.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <size key="shadowOffset" width="1" height="1"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Moscow" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sZH-80-kDx">
+                                <rect key="frame" x="16" y="371.5" width="61.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <size key="shadowOffset" width="1" height="1"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Clear sky" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iez-EH-DgA">
+                                <rect key="frame" x="16" y="450.5" width="68" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <size key="shadowOffset" width="1" height="1"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunrise:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9SE-iG-Mvw">
+                                <rect key="frame" x="16" y="479" width="60" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <size key="shadowOffset" width="1" height="1"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunset:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUn-Uh-qLh">
+                                <rect key="frame" x="16" y="499.5" width="56" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <size key="shadowOffset" width="1" height="1"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="wdh-eb-7B0" firstAttribute="top" secondItem="mGi-Rc-Vxs" secondAttribute="top" id="4Lz-cf-q3Z"/>
                             <constraint firstItem="mGi-Rc-Vxs" firstAttribute="trailing" secondItem="X6W-H3-PVv" secondAttribute="trailing" id="9bF-tA-Gnz"/>
+                            <constraint firstItem="9pD-c5-MQ6" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" id="Aqb-zg-58Y"/>
                             <constraint firstItem="X6W-H3-PVv" firstAttribute="top" secondItem="wdh-eb-7B0" secondAttribute="bottom" id="F1K-ta-8NA"/>
+                            <constraint firstItem="9pD-c5-MQ6" firstAttribute="trailing" secondItem="mGi-Rc-Vxs" secondAttribute="trailing" id="O02-Gj-YQa"/>
                             <constraint firstItem="X6W-H3-PVv" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" id="SLC-uW-nub"/>
+                            <constraint firstItem="9pD-c5-MQ6" firstAttribute="top" secondItem="wdh-eb-7B0" secondAttribute="bottom" id="XQW-NZ-LQa"/>
+                            <constraint firstItem="9SE-iG-Mvw" firstAttribute="top" secondItem="iez-EH-DgA" secondAttribute="bottom" constant="8" id="Y08-1Q-WPf"/>
                             <constraint firstItem="mGi-Rc-Vxs" firstAttribute="bottom" secondItem="X6W-H3-PVv" secondAttribute="bottom" id="YbP-RO-J55"/>
                             <constraint firstItem="wdh-eb-7B0" firstAttribute="trailing" secondItem="mGi-Rc-Vxs" secondAttribute="trailing" id="YoZ-BB-4fy"/>
+                            <constraint firstItem="9td-N6-uBd" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" constant="16" id="ZqC-gw-Qob"/>
+                            <constraint firstItem="sZH-80-kDx" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" constant="16" id="aAr-MN-rlY"/>
+                            <constraint firstItem="FUn-Uh-qLh" firstAttribute="top" secondItem="9SE-iG-Mvw" secondAttribute="bottom" id="dTL-FA-06E"/>
+                            <constraint firstItem="9td-N6-uBd" firstAttribute="top" secondItem="sZH-80-kDx" secondAttribute="bottom" id="e8r-SX-j0f"/>
+                            <constraint firstItem="9td-N6-uBd" firstAttribute="centerY" secondItem="kRW-w5-NYx" secondAttribute="centerY" id="fBB-zG-Wyy"/>
+                            <constraint firstItem="iez-EH-DgA" firstAttribute="top" secondItem="9td-N6-uBd" secondAttribute="bottom" id="nOM-0Y-VjD"/>
+                            <constraint firstItem="FUn-Uh-qLh" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" constant="16" id="o8o-KU-psm"/>
+                            <constraint firstItem="9SE-iG-Mvw" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" constant="16" id="rnW-ZN-Hif"/>
+                            <constraint firstItem="9pD-c5-MQ6" firstAttribute="bottom" secondItem="mGi-Rc-Vxs" secondAttribute="bottom" id="rsj-Ih-vFg"/>
                             <constraint firstItem="wdh-eb-7B0" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" id="sJU-dj-sTp"/>
+                            <constraint firstItem="iez-EH-DgA" firstAttribute="leading" secondItem="mGi-Rc-Vxs" secondAttribute="leading" constant="16" id="zGh-hX-diw"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mGi-Rc-Vxs"/>
                     </view>
                     <connections>
+                        <outlet property="cityLabel" destination="sZH-80-kDx" id="dsA-mw-Smu"/>
+                        <outlet property="descriptionLabel" destination="iez-EH-DgA" id="Ucj-yo-2g7"/>
                         <outlet property="imageView" destination="X6W-H3-PVv" id="Yki-Dt-Nav"/>
                         <outlet property="navigationBar" destination="lhf-nE-4r6" id="O3g-pV-X3K"/>
+                        <outlet property="overlay" destination="9pD-c5-MQ6" id="Q8i-ae-S3d"/>
+                        <outlet property="sunriseLabel" destination="9SE-iG-Mvw" id="dWY-72-eoz"/>
+                        <outlet property="sunsetLabel" destination="FUn-Uh-qLh" id="q34-8R-xdr"/>
+                        <outlet property="temperatureLabel" destination="9td-N6-uBd" id="HYb-ke-Ggf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FrQ-3d-COn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="968" y="136"/>
+            <point key="canvasLocation" x="966.66666666666674" y="135.9375"/>
         </scene>
     </scenes>
     <resources>

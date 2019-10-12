@@ -51,9 +51,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             print("query: \(searchText)")
             if searchText.isEmpty {
                 print("Query is empty")
+                appDelegate.getInteractor().cancelLastRequest()
                 self.updateTableView(appDelegate.getInteractor().getSavedSearchResults())
             } else {
-                appDelegate.getInteractor().requestCitiesFromRemote(query: searchText, failure: { msg in
+                appDelegate.getInteractor().requestCities(query: searchText, failure: { msg in
                     print(msg)
                 }, success: { cities in
                     self.updateTableView(cities)
