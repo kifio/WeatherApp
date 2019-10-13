@@ -17,10 +17,8 @@ class ImagesClient {
                        w: Int, h: Int,
                        failure: @escaping (_ error: String) -> Void,
                        success: @escaping (_ response: Data) -> Void) {
-
         let resolution = "/\(w)x\(h)"
         let city = "/?\(cityName.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil))"
-
         AF.request("\(baseUrl)\(resolution)\(city)").response { response in
             if let data = response.data {
                 success(data)

@@ -97,27 +97,22 @@ class WeatherMapClient: NSObject {
         print("results count: \(cities.count)")
     }
     
+    // Requect weather data for specific city, with known id
     func weather(id: String,
                  failure: @escaping (_ error: String) -> Void,
-                 success: @escaping (_ response: Interactor.City) -> Void) {
-        makeRequest("id=\(id)")
-        self.request?.response { response in
-            if let data = response.data {
-                let cities = self.parseItems(data)
-                if cities.count == 0 {
-                    failure("Cannot parce response for city \(id)")
-                } else {
-                    success(cities[0])
-                }
-            } else {
-                failure(response.error?.errorDescription ?? "")
-            }
-        }
+                 success: @escaping (_ response: [Interactor.City]) -> Void) {
+        makeRequest("id=\(id)", failure, success)
     }
     
+    // Requect weather data for multiple cities, list of cities builds on the client side
     func weather(query: String,
                  failure: @escaping (_ error: String) -> Void,
                  success: @escaping (_ response: [Interactor.City]) -> Void) {
+        
+        
+        if self.request != nil {
+            cancelLastRequest()
+        }
         
         var filteredResults = [OpenWeatherCity]()
         
@@ -145,29 +140,29 @@ class WeatherMapClient: NSObject {
             })
             .joined(separator: ",")
         
-        makeRequest("id=\(ids)")
+        makeRequest("id=\(ids)", failure, success)
+    }
+    
+    private func makeRequest(_ id: String,
+                             _ failure: @escaping (_ error: String) -> Void,
+                             _ success: @escaping (_ response: [Interactor.City]) -> Void) {
+        let units = "&units=imperial"
+        let appid = "&appId=\(self.credentials.appId)"
+        let request = "\(baseUrl)\(path)\(id)\(units)\(appid)"
+        //        print(request)
+        self.request = AF.request(request)
         self.request?.response { response in
             if let data = response.data {
-                success(self.parseItems(data))
+                let cities = self.parseItems(data)
+                if cities.count == 0 {
+                    failure("Cannot parce response for city \(id)")
+                } else {
+                    success(cities)
+                }
             } else {
                 failure(response.error?.errorDescription ?? "")
             }
         }
-    }
-    
-    private func makeRequest(_ id: String) {
-        let units = "&units=imperial"
-        let appid = "&appId=\(self.credentials.appId)"
-        
-        let request = "\(baseUrl)\(path)\(id)\(units)\(appid)"
-        print(request)
-        
-        if self.request != nil {
-            self.request?.cancel()
-            self.request = nil
-        }
-        
-        self.request = AF.request(request)
     }
     
     func cancelLastRequest() {

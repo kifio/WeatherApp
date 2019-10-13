@@ -12,6 +12,14 @@ import UIKit
 
 class Interactor {
     
+    struct DBConsts {
+        fileprivate static let searchEntity = "SearchItem"
+        fileprivate static let cityName = "city_name"
+        fileprivate static let country = "country"
+        fileprivate static let timestamp = "timestamp"
+        fileprivate static let id = "id"
+    }
+    
     struct City: Codable {
         var id: String
         var temperature: Double = 0.0
@@ -64,7 +72,10 @@ class Interactor {
     func requestCityById(id: String,
                          failure: @escaping (_ error: String) -> Void,
                          success: @escaping (_ response: City) -> Void) {
-        weatherMapClient.weather(id: id, failure: failure, success: success)
+        weatherMapClient.weather(id: id, failure: failure, success: { cities in
+            // Size of collection checks in the client
+            success(cities[0])
+        })
     }
     
     func loadImage(cityName: String,
@@ -85,18 +96,18 @@ class Interactor {
         }
         
         let managedContext = appDelegate.persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: "SearchItem", in: managedContext)!
+        let entity = NSEntityDescription.entity(forEntityName: DBConsts.searchEntity, in: managedContext)!
         
         let searchItem = NSManagedObject(entity: entity, insertInto: managedContext)
-        searchItem.setValue(city.name, forKeyPath: "city_name")
-        searchItem.setValue(city.country, forKeyPath: "country")
-        searchItem.setValue(city.id, forKeyPath: "id")
-        searchItem.setValue(Date(), forKey: "timestamp")
+        searchItem.setValue(city.name, forKeyPath: DBConsts.cityName)
+        searchItem.setValue(city.country, forKeyPath: DBConsts.country)
+        searchItem.setValue(city.id, forKeyPath: DBConsts.id)
+        searchItem.setValue(Date(), forKey: DBConsts.timestamp)
         
         do {
             try managedContext.save()
         } catch {
-            print("Could not save. \(city.name)")
+            print("Could not save city. \(city.name)")
         }
     }
     
@@ -106,23 +117,23 @@ class Interactor {
         }
         
         let managedContext = appDelegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "SearchItem")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: DBConsts.searchEntity)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: DBConsts.timestamp, ascending: false)]
         
         do {
             var cities = [City]()
             let managedObjects = try managedContext.fetch(fetchRequest)
             for managedObject in managedObjects {
-                let cityName = managedObject.value(forKey: "city_name") as! String
-                let country = managedObject.value(forKey: "country") as! String
-                let id = managedObject.value(forKey: "id") as! String
+                let cityName = managedObject.value(forKey: DBConsts.cityName) as! String
+                let country = managedObject.value(forKey: DBConsts.country) as! String
+                let id = managedObject.value(forKey: DBConsts.id) as! String
                 var city = City(id: id, name: cityName, country: country)
                 city.fromCache = true
                 cities.append(city)
             }
             return cities
         } catch {
-            print("Could not fetch.")
+            print("Could not fetch cities from storage.")
             return []
         }
     }
@@ -133,7 +144,7 @@ class Interactor {
         }
         
         let managedContext = appDelegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchItem")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: DBConsts.searchEntity)
         fetchRequest.predicate = NSPredicate(format: "(id==%@)", city.id)
         
         do {
