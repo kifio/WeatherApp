@@ -55,7 +55,12 @@ class Interactor {
         if let cities = getFromStorage(query) {
             success(cities)
         } else {
-            weatherMapClient.weather(query: query, failure: failure, success: success)
+            weatherMapClient.weather(query: query, failure: failure, success: { response in
+                let cities = response.map({(item: WeatherMapClient.OpenWeatherItem) -> Interactor.City in
+                    return self.mapItemToCity(item)
+                }) as [City]
+                success(cities)
+            })
         }
     }
     
@@ -72,11 +77,28 @@ class Interactor {
     func requestCityById(id: String,
                          failure: @escaping (_ error: String) -> Void,
                          success: @escaping (_ response: City) -> Void) {
-        weatherMapClient.weather(id: id, failure: failure, success: { cities in
-            // Size of collection checks in the client
-            success(cities[0])
+        weatherMapClient.weather(id: id, failure: failure, success: { response in
+            let cities = response.map({(item: WeatherMapClient.OpenWeatherItem) -> Interactor.City in
+                return self.mapItemToCity(item)
+            }) as [City]
+            if !cities.isEmpty {
+                success(cities.first!)
+            }
         })
     }
+
+    private func mapItemToCity(_ item: WeatherMapClient.OpenWeatherItem) -> Interactor.City {
+           return Interactor.City(
+               id: String(item.id),
+               temperature: item.main.temp,
+               name: item.name,
+               country: item.sys.country,
+               main: item.weather[0].main,
+               description: item.weather[0].description,
+               pressure: item.main.pressure,
+               sunrise: item.sys.sunrise,
+               sunset: item.sys.sunset)
+       }
     
     func loadImage(cityName: String,
                    w: Int, h: Int,

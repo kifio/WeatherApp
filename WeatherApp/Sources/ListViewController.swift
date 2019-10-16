@@ -8,19 +8,20 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class ListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var citiesView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
     private var cities = [Interactor.City]()
+    private let transition = PopAnimator()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cities.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for: indexPath) as? CityCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for: indexPath) as? CityCellView else {
             fatalError("The dequeued cell is not an instance of MealTableViewCell.")
         }
         
@@ -32,17 +33,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let city = cities[indexPath.row]
             appDelegate.getInteractor().deleteSavedSearchResult(city)
             appDelegate.getInteractor().saveSearchItemToCoreData(city)
-            let cityViewController = storyBoard.instantiateViewController(withIdentifier: "CityViewController") as! CityViewController
-            cityViewController.setCity(city)
-            self.present(cityViewController, animated: true, completion: {
-                if self.searchBar.searchTextField.text?.isEmpty ?? false {
-                    self.updateTableView(appDelegate.getInteractor().getSavedSearchResults())
+            self.performSegue(withIdentifier: "showCity", sender: city)
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let cityViewController = segue.destination as? CityViewController {
+            if let city = sender as? Interactor.City {
+                cityViewController.setCity(city)
+            }
+            cityViewController.transitioningDelegate = self
+            cityViewController.modalPresentationStyle = .fullScreen
+            cityViewController.completion = {
+                if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                    if self.searchBar.searchTextField.text?.isEmpty ?? false {
+                        self.updateTableView(appDelegate.getInteractor().getSavedSearchResults())
+                    }
                 }
-            })
+            }
         }
     }
     
@@ -82,4 +93,32 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.cities += cities
         self.citiesView.reloadData()
     }
+}
+
+extension ListViewController : UIViewControllerTransitioningDelegate {
+
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        if let selectedIndexPathCell = self.citiesView.indexPathForSelectedRow,
+            let selectedCell = self.citiesView.cellForRow(at: selectedIndexPathCell) as? CityCellView,
+            let selectedCellSuperview = selectedCell.superview {
+            transition.originFrame = selectedCellSuperview.convert(selectedCell.frame, to: nil)
+            transition.originFrame = CGRect(
+                x: transition.originFrame.origin.x + 20,
+                y: transition.originFrame.origin.y + 20,
+                width: transition.originFrame.size.width - 40,
+                height: transition.originFrame.size.height - 40
+            )
+        }
+
+        return transition
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
+    }
+
 }

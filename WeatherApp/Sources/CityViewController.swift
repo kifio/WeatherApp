@@ -22,6 +22,7 @@ class CityViewController: UIViewController, WKNavigationDelegate {
     
     fileprivate var city: Interactor.City? = nil
     fileprivate var isRemovable = false
+    var completion: (() -> Void)? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +59,7 @@ class CityViewController: UIViewController, WKNavigationDelegate {
                 self.overlay.layer.opacity = 0.3
             }
         }
-    }
+    }   
     
     private func getDateFormatter() -> DateFormatter {
         let dateFormatter = DateFormatter()
@@ -91,7 +92,9 @@ class CityViewController: UIViewController, WKNavigationDelegate {
     }
     
     @IBAction func closeViewController(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: self.completion)
+        self.completion = nil
+        self.city = nil
     }
 
     @IBAction func deleteSearchItem(_ sender: Any) {
@@ -107,11 +110,13 @@ class CityViewController: UIViewController, WKNavigationDelegate {
                         appDelegate.getInteractor().deleteSavedSearchResult(city)
                     }
 
-                    if let presenter = self.presentingViewController as? ViewController {
+                    if let presenter = self.presentingViewController as? ListViewController {
                         presenter.updateTableView(appDelegate.getInteractor().getSavedSearchResults())
                     }
 
-                    self.dismiss(animated: true, completion: nil)
+                    self.dismiss(animated: true, completion: self.completion)
+                    self.completion = nil
+                    self.city = nil
                 }
             })
 

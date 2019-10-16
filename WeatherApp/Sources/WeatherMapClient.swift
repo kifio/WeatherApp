@@ -20,23 +20,23 @@ class WeatherMapClient: NSObject {
         var list: [OpenWeatherItem]
     }
     
-    private struct OpenWeatherWeather: Codable {
+     struct OpenWeatherWeather: Codable {
         var main: String
         var description: String
     }
     
-    private struct OpenWeatherTemperature: Codable {
+    struct OpenWeatherTemperature: Codable {
         var temp: Double
         var pressure: Double
     }
     
-    private struct OpenWeatherInfo: Codable {
+    struct OpenWeatherInfo: Codable {
         var country: String
         var sunrise: Int64
         var sunset: Int64
     }
     
-    private struct OpenWeatherItem: Codable {
+    struct OpenWeatherItem: Codable {
         var id: Int
         var name: String
         var weather: [OpenWeatherWeather]
@@ -44,7 +44,7 @@ class WeatherMapClient: NSObject {
         var sys: OpenWeatherInfo
     }
     
-    private struct OpenWeatherCity: Codable {
+    struct OpenWeatherCity: Codable {
         var id: Int
         var name: String
         var country: String
@@ -100,14 +100,14 @@ class WeatherMapClient: NSObject {
     // Requect weather data for specific city, with known id
     func weather(id: String,
                  failure: @escaping (_ error: String) -> Void,
-                 success: @escaping (_ response: [Interactor.City]) -> Void) {
+                 success: @escaping (_ response: [OpenWeatherItem]) -> Void) {
         makeRequest("id=\(id)", failure, success)
     }
     
     // Requect weather data for multiple cities, list of cities builds on the client side
     func weather(query: String,
                  failure: @escaping (_ error: String) -> Void,
-                 success: @escaping (_ response: [Interactor.City]) -> Void) {
+                 success: @escaping (_ response: [OpenWeatherItem]) -> Void) {
         
         
         if self.request != nil {
@@ -145,7 +145,7 @@ class WeatherMapClient: NSObject {
     
     private func makeRequest(_ id: String,
                              _ failure: @escaping (_ error: String) -> Void,
-                             _ success: @escaping (_ response: [Interactor.City]) -> Void) {
+                             _ success: @escaping (_ response: [OpenWeatherItem]) -> Void) {
         let units = "&units=imperial"
         let appid = "&appId=\(self.credentials.appId)"
         let request = "\(baseUrl)\(path)\(id)\(units)\(appid)"
@@ -170,28 +170,13 @@ class WeatherMapClient: NSObject {
         self.request = nil
     }
     
-    private func parseItems(_ response: Data) -> [Interactor.City] {
+    private func parseItems(_ response: Data) -> [OpenWeatherItem] {
         do {
             let results = try self.decoder.decode(OpenWeatherResponse.self, from: response)
-            return results.list.map({(item: OpenWeatherItem) -> Interactor.City in
-                return mapItemToCity(item)
-            })
+            return results.list
         } catch {
             print(error)
-            return [Interactor.City]()
+            return [OpenWeatherItem]()
         }
-    }
-    
-    private func mapItemToCity(_ item: OpenWeatherItem) -> Interactor.City {
-        return Interactor.City(
-            id: String(item.id),
-            temperature: item.main.temp,
-            name: item.name,
-            country: item.sys.country,
-            main: item.weather[0].main,
-            description: item.weather[0].description,
-            pressure: item.main.pressure,
-            sunrise: item.sys.sunrise,
-            sunset: item.sys.sunset)
     }
 }
