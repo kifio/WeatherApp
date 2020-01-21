@@ -21,7 +21,6 @@
 		C0ECE92E23473751006CAA88 /* ImagesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECE92D23473751006CAA88 /* ImagesClient.swift */; };
 		C0ECE93123478090006CAA88 /* SearchList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C0ECE92F23478090006CAA88 /* SearchList.xcdatamodeld */; };
 		FB03EF3E234A87CF00F69B22 /* city.list.json in Resources */ = {isa = PBXBuildFile; fileRef = FB03EF3D234A87CF00F69B22 /* city.list.json */; };
-		FB6485BF235141D200F109BA /* OpenWeather.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB6485BE235141D200F109BA /* OpenWeather.plist */; };
 		FB79F95E234A869000DDFD74 /* WeatherMapClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB79F95D234A869000DDFD74 /* WeatherMapClient.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,7 +43,6 @@
 		C0ECE93023478090006CAA88 /* SearchList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SearchList.xcdatamodel; sourceTree = "<group>"; };
 		E92CA9A1FB82ABB905BC5C03 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
 		FB03EF3D234A87CF00F69B22 /* city.list.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = city.list.json; sourceTree = "<group>"; };
-		FB6485BE235141D200F109BA /* OpenWeather.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = OpenWeather.plist; sourceTree = "<group>"; };
 		FB79F95D234A869000DDFD74 /* WeatherMapClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherMapClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,7 +119,6 @@
 				C073BE84233ECE1F00972366 /* Assets.xcassets */,
 				C073BE86233ECE1F00972366 /* LaunchScreen.storyboard */,
 				C0ECE92F23478090006CAA88 /* SearchList.xcdatamodeld */,
-				FB6485BE235141D200F109BA /* OpenWeather.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -195,7 +192,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C073BE88233ECE1F00972366 /* LaunchScreen.storyboard in Resources */,
-				FB6485BF235141D200F109BA /* OpenWeather.plist in Resources */,
 				C073BE85233ECE1F00972366 /* Assets.xcassets in Resources */,
 				C073BE80233ECE1E00972366 /* Main.storyboard in Resources */,
 				FB03EF3E234A87CF00F69B22 /* city.list.json in Resources */,

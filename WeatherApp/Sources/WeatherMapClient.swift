@@ -11,9 +11,7 @@ import Alamofire
 
 class WeatherMapClient: NSObject {
     
-    private struct OpenWeatherKeys: Codable {
-        var appId: String
-    }
+    private let appId: String = ""
     
     private struct OpenWeatherResponse: Codable {
         var cnt: Int
@@ -54,35 +52,15 @@ class WeatherMapClient: NSObject {
     private let path = "/group?"
     private let params = "id=%s"
     private let decoder = JSONDecoder()
-    private var credentials: OpenWeatherKeys!
     private var cities: [OpenWeatherCity]!
     private var results: [OpenWeatherItem]!
     private var request: DataRequest? = nil
     
     override init() {
         super.init()
-        initAppId()
         initCitiesList()
     }
-    
-    private func initAppId() {
-        guard let path = Bundle.main.path(forResource: "OpenWeather", ofType: "plist") else {
-            print("Path for OAuth.plist not defined")
-            return
-        }
-        
-        guard let keysFile = FileManager.default.contents(atPath: path) else {
-            print("Cannot get content from OpenWeather.plist")
-            return
-        }
-        
-        do {
-            credentials = try PropertyListDecoder().decode(OpenWeatherKeys.self, from: keysFile)
-        } catch {
-            print("Cannot decode content of OpenWeather.plist to OpenWeatherKeys structure")
-        }
-    }
-    
+
     private func initCitiesList() {
         let file = Bundle.main.path(forResource: "city.list", ofType: "json")
         
@@ -147,7 +125,7 @@ class WeatherMapClient: NSObject {
                              _ failure: @escaping (_ error: String) -> Void,
                              _ success: @escaping (_ response: [OpenWeatherItem]) -> Void) {
         let units = "&units=imperial"
-        let appid = "&appId=\(self.credentials.appId)"
+        let appid = "&appId=\(self.appId)"
         let request = "\(baseUrl)\(path)\(id)\(units)\(appid)"
         //        print(request)
         self.request = AF.request(request)
